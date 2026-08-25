@@ -33,7 +33,6 @@ func (s *Service) Match(obsID int64, tolerance float64) ([]*model.AttributionCan
 	if err != nil {
 		return nil, err
 	}
-	_ = peaks[0]
 
 	// 清空旧候选，保证幂等重建。
 	if err := s.db.DeleteCandidatesForObservation(obsID); err != nil {

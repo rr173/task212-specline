@@ -63,7 +63,8 @@ func (db *DB) ListCandidates(observationID int64) ([]*model.AttributionCandidate
 		out = append(out, &c)
 	}
 	if len(out) == 0 {
-		return nil, rows.Err()
+		// 返回非 nil 空切片：区别于错误，且 JSON 序列化为 [] 而非 null。
+		return []*model.AttributionCandidate{}, rows.Err()
 	}
 	return out, rows.Err()
 }

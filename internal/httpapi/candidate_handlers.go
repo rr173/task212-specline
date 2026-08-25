@@ -2,6 +2,8 @@ package httpapi
 
 import (
 	"net/http"
+
+	"task212-specline/internal/model"
 )
 
 type calibrateRequest struct {
@@ -67,17 +69,15 @@ func (s *Server) listCandidates(w http.ResponseWriter, r *http.Request) {
 		writeError(w, err)
 		return
 	}
+	// 仅查询已持久化的归属候选：GET 不应产生隐式匹配副作用。
+	// 尚未生成候选（含空观测集）时返回 HTTP 200 与空列表。
 	cands, err := s.app.Matching.Candidates(id)
 	if err != nil {
 		writeError(w, err)
 		return
 	}
 	if cands == nil {
-		cands, err = s.app.Matching.Match(id, 0)
-		if err != nil {
-			writeError(w, err)
-			return
-		}
+		cands = []*model.AttributionCandidate{}
 	}
 	writeJSON(w, http.StatusOK, cands)
 }
