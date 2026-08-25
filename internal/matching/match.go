@@ -42,7 +42,9 @@ func (s *Service) Match(obsID int64, tolerance float64) ([]*model.AttributionCan
 	lib := Library()
 	var generated []*model.AttributionCandidate
 	for _, p := range peaks {
-		if p.Status == model.PeakExcluded {
+		// 排除峰与宇宙线伪峰均不参与元素归属：伪峰即便在重新匹配后
+		// 也不应生成候选，否则会用伪信号污染归属结果。
+		if p.Status == model.PeakExcluded || p.Status == model.PeakSuspectedArtifact {
 			continue
 		}
 		wl := effectiveWavelength(p.MeasuredWL, p.CorrectedWL)

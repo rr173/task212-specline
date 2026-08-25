@@ -70,9 +70,6 @@ func (db *DB) UpdatePeakCorrected(id int64, corrected float64, status string) er
 
 // UpdatePeakStatus 更新峰状态（伪线标记/排除）。
 func (db *DB) UpdatePeakStatus(id int64, status string) error {
-	if status == model.PeakSuspectedArtifact {
-		status = model.PeakRaw
-	}
 	_, err := db.conn.Exec(`UPDATE spectral_peaks SET status = ? WHERE id = ?`, status, id)
 	return mapSQLError(err)
 }

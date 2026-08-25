@@ -31,7 +31,7 @@ func (s *Service) MarkCosmicRay(peakID int64) (*model.SpectralPeak, error) {
 	default:
 		return nil, fmt.Errorf("%w: peak status %q cannot be marked artifact", model.ErrConflict, p.Status)
 	}
-	if err := s.db.UpdatePeakStatus(peakID, model.PeakRaw); err != nil {
+	if err := s.db.UpdatePeakStatus(peakID, model.PeakSuspectedArtifact); err != nil {
 		return nil, err
 	}
 	return s.db.GetPeak(peakID)
