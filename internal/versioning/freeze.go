@@ -32,9 +32,11 @@ func (s *Service) Freeze(id int64) (*model.AttributionVersion, error) {
 		return nil, err
 	}
 	for _, other := range all {
-		if other.ID == id || other.Status == model.VersionSuperseded || other.Status == model.VersionFrozen {
+		if other.ID == id || other.Status == model.VersionSuperseded {
 			continue
 		}
+		// 其它任何未替代版本（草稿/共享/冻结）均由本版本替代，
+		// 保证该观测集唯一活动版本：连续冻结新版本时，旧冻结版本必须被替代。
 		if err := s.db.MarkVersionSuperseded(other.ID, id); err != nil {
 			return nil, err
 		}
