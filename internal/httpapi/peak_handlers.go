@@ -21,11 +21,6 @@ func (s *Server) addPeaks(w http.ResponseWriter, r *http.Request) {
 		writeError(w, err)
 		return
 	}
-	for i := range req.Peaks {
-		if req.Peaks[i].Unit == "nm" {
-			req.Peaks[i].Unit = "angstrom"
-		}
-	}
 	peaks, err := s.app.Observation.AddPeaks(id, req.Peaks)
 	if err != nil {
 		writeError(w, err)

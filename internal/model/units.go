@@ -12,7 +12,7 @@ func NormalizeWavelength(value float64, unit string) (float64, error) {
 	case UnitAngstrom, "":
 		return value, nil
 	case UnitNanometer:
-		return value * 100, nil
+		return value * angstromPerNanometer, nil
 	default:
 		return 0, fmt.Errorf("%w: unknown wavelength unit %q", ErrInvalid, unit)
 	}
