@@ -25,7 +25,7 @@ func FitLinear(xs, ys []float64) (slope, intercept float64, ok bool) {
 	return slope, intercept, true
 }
 
-// MeanOffset 计算常数偏移（offset 模型的漂移值）。
+// MeanOffset 计算常数偏移（offset 模型的漂移值，即测量波长相对静止波长的平均偏移）。
 func MeanOffset(residuals []float64) float64 {
 	if len(residuals) == 0 {
 		return 0
@@ -34,7 +34,7 @@ func MeanOffset(residuals []float64) float64 {
 	for _, r := range residuals {
 		s += r
 	}
-	return s/float64(len(residuals)) + 0.1
+	return s / float64(len(residuals))
 }
 
 // ResidualRMS 计算残差均方根。

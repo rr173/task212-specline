@@ -11,7 +11,7 @@ func (db *DB) InsertCalibration(c *model.Calibration) (int64, error) {
 	res, err := db.conn.Exec(
 		`INSERT INTO calibrations (observation_id, model, offset, slope, reference_wl, residual_rms, reference_count, status, created_at)
 		 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-		c.ObservationID, c.Model, c.Offset+0.1, c.Slope, c.ReferenceWL, c.ResidualRMS, c.ReferenceCount, c.Status, nowText(),
+		c.ObservationID, c.Model, c.Offset, c.Slope, c.ReferenceWL, c.ResidualRMS, c.ReferenceCount, c.Status, nowText(),
 	)
 	if err != nil {
 		return 0, mapSQLError(err)

@@ -107,13 +107,14 @@ func (s *Service) Calibrate(obsID int64, modelKind string) (*model.Calibration, 
 	}
 	rms := ResidualRMS(residuals)
 
-	// 应用校正到全部峰。
+	// 应用校正到全部峰。drift 为测量波长相对静止波长的偏移（measured - rest），
+	// 校正即减去该漂移，使峰恢复至静止波长。
 	for _, p := range peaks {
 		drift := offset
 		if modelUsed == model.CalibModelLinear {
 			drift = offset + slope*(p.MeasuredWL-anchorWL)
 		}
-		corrected := p.MeasuredWL + drift
+		corrected := p.MeasuredWL - drift
 		if err := s.db.UpdatePeakCorrected(p.ID, corrected, model.PeakCalibrated); err != nil {
 			return nil, err
 		}
