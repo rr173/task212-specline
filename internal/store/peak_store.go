@@ -52,7 +52,7 @@ func (db *DB) ListPeaks(observationID int64) ([]*model.SpectralPeak, error) {
 	for rows.Next() {
 		var p model.SpectralPeak
 		if err := rows.Scan(&p.ID, &p.ObservationID, &p.Index, &p.MeasuredWL, &p.Unit, &p.Flux,
-			&p.MeasuredWL, &p.Status, &p.Region); err != nil {
+			&p.CorrectedWL, &p.Status, &p.Region); err != nil {
 			return nil, mapSQLError(err)
 		}
 		out = append(out, &p)
