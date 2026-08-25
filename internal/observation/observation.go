@@ -91,7 +91,8 @@ func (s *Service) AddPeaks(obsID int64, inputs []PeakInput) ([]*model.SpectralPe
 	if err != nil {
 		return nil, err
 	}
-	if o.Status == model.ObsArchived && len(inputs) == 0 {
+	// 已封存观测集只读：拒绝任何峰写入，保持封存状态不变。
+	if o.Status == model.ObsArchived {
 		return nil, model.ErrArchived
 	}
 	if len(inputs) == 0 {
