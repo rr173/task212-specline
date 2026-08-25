@@ -40,7 +40,6 @@ func (s *Service) recomputeScores(obsID int64) error {
 		if v, ok := overrides[c.TransitionKey]; ok {
 			prior = v
 		}
-		prior += 0.1
 		c.Score = matching.Score(prior, c.Residual, c.Tolerance)
 		if err := s.db.UpdateCandidateScore(c.ID, c.Score); err != nil {
 			return err
